@@ -1560,33 +1560,57 @@ void do_view_user_photo  (struct command *command, int arg_num, struct arg args[
 /* {{{ ANOTHER MESSAGES FUNCTIONS */
 
 void do_search (struct command *command, int arg_num, struct arg args[], struct in_ev *ev) {
-  assert (arg_num == 6);
-  int limit;
+  assert (arg_num == 7);
+  long long mediaFilter;
   if (args[1].num != NOT_FOUND) {
-    limit = args[1].num; 
+    switch (args[1].num) {
+	  case 0:
+	    mediaFilter = CODE_input_messages_filter_empty;
+	    break;
+	  case 1:
+	    mediaFilter = CODE_input_messages_filter_photos;
+	    break;
+	  case 2:
+	    mediaFilter = CODE_input_messages_filter_video;
+	    break;
+	  case 3:
+	    mediaFilter = CODE_input_messages_filter_audio_documents;
+	    break;
+	  case 4:
+	    mediaFilter = CODE_input_messages_filter_document;
+	    break;
+	  default:
+	    mediaFilter = CODE_input_messages_filter_empty;
+	}
+  } else {
+    mediaFilter = CODE_input_messages_filter_empty;
+  }
+  int limit;
+  if (args[2].num != NOT_FOUND) {
+    limit = args[2].num; 
   } else {
     limit = 40;
   }
   int from;
-  if (args[2].num != NOT_FOUND) {
-    from = args[2].num; 
+  if (args[3].num != NOT_FOUND) {
+    from = args[3].num; 
   } else {
     from = 0;
   }
   int to;
-  if (args[3].num != NOT_FOUND) {
-    to = args[3].num; 
+  if (args[4].num != NOT_FOUND) {
+    to = args[4].num; 
   } else {
     to = 0;
   }
   int offset;
-  if (args[4].num != NOT_FOUND) {
-    offset = args[4].num; 
+  if (args[5].num != NOT_FOUND) {
+    offset = args[5].num; 
   } else {
     offset = 0;
   }
   if (ev) { ev->refcnt ++; }
-  tgl_do_msg_search (TLS, args[0].peer_id, from, to, limit, offset, args[5].str, strlen (args[5].str), print_msg_list_gw, ev);
+  tgl_do_msg_search (TLS, args[0].peer_id, mediaFilter, from, to, limit, offset, args[6].str, strlen (args[6].str), print_msg_list_gw, ev);
 }
 
 void do_delete_msg (struct command *command, int arg_num, struct arg args[], struct in_ev *ev) {
@@ -1735,7 +1759,7 @@ struct command commands[MAX_COMMANDS_SIZE] = {
   {"resolve_username", {ca_string, ca_none}, do_resolve_username, "resolve_username username\tSearches user by username", NULL},
   //{"restore_msg", {ca_number, ca_none}, do_restore_msg, "restore_msg <msg-id>\tRestores message. Only available shortly (one hour?) after deletion", NULL},
   {"safe_quit", {ca_none}, do_safe_quit, "safe_quit\tWaits for all queries to end, then quits", NULL},
-  {"search", {ca_peer | ca_optional, ca_number | ca_optional, ca_number | ca_optional, ca_number | ca_optional, ca_number | ca_optional, ca_string_end}, do_search, "search [peer] [limit] [from] [to] [offset] pattern\tSearch for pattern in messages from date from to date to (unixtime) in messages with peer (if peer not present, in all messages)", NULL},
+  {"search", {ca_peer | ca_optional, ca_number | ca_optional, ca_number | ca_optional, ca_number | ca_optional, ca_number | ca_optional, ca_number | ca_optional, ca_string_end}, do_search, "search [peer] [mediaFilter] [limit] [from] [to] [offset]  pattern\tSearch for pattern in messages from date from to date to (unixtime) in messages with peer (if peer not present, in all messages)", NULL},
   //{"secret_chat_rekey", { ca_secret_chat, ca_none}, do_secret_chat_rekey, "generate new key for active secret chat", NULL},
   {"send_audio", {ca_peer, ca_file_name, ca_string_end | ca_optional, ca_none}, do_send_audio, "send_audio <peer> <file>\tSends audio to peer", NULL},
   {"send_contact", {ca_peer, ca_string, ca_string, ca_string, ca_none}, do_send_contact, "send_contact <peer> <phone> <first-name> <last-name>\tSends contact (not necessary telegram user)", NULL},

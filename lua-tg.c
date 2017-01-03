@@ -40,7 +40,7 @@
 lua_State *luaState;
 
 //#include "interface.h"
-//#include "auto/constants.h"
+#include "auto/constants.h"
 #include <tgl/tgl.h>
 #include <tgl/tgl-queries.h>
 #include "interface.h"
@@ -1284,11 +1284,11 @@ void lua_do_all (void) {
       p += 4;
       break;
     case lq_search:
-      tgl_do_msg_search (TLS, lua_ptr[p + 1].peer_id, 0, 0, 40, 0, LUA_STR_ARG (p + 2), lua_msg_list_cb, lua_ptr[p].ptr);
+      tgl_do_msg_search (TLS, lua_ptr[p + 1].peer_id, CODE_input_messages_filter_empty, 0, 0, 40, 0, LUA_STR_ARG (p + 2), lua_msg_list_cb, lua_ptr[p].ptr);
       p += 3;
       break;
     case lq_global_search:
-      tgl_do_msg_search (TLS, tgl_set_peer_id (TGL_PEER_UNKNOWN, 0), 0, 0, 40, 0, LUA_STR_ARG (p + 1), lua_msg_list_cb, lua_ptr[p].ptr);
+      tgl_do_msg_search (TLS, tgl_set_peer_id (TGL_PEER_UNKNOWN, 0), CODE_input_messages_filter_empty, 0, 0, 40, 0, LUA_STR_ARG (p + 1), lua_msg_list_cb, lua_ptr[p].ptr);
       p += 2;
       break;
     case lq_mark_read:
