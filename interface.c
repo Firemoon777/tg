@@ -1574,10 +1574,25 @@ void do_search (struct command *command, int arg_num, struct arg args[], struct 
 	    mediaFilter = CODE_input_messages_filter_video;
 	    break;
 	  case 3:
-	    mediaFilter = CODE_input_messages_filter_audio_documents;
+	    mediaFilter = CODE_input_messages_filter_photo_video;
 	    break;
 	  case 4:
+	    mediaFilter = CODE_input_messages_filter_photo_video_documents;
+	    break;
+	  case 5:
 	    mediaFilter = CODE_input_messages_filter_document;
+	    break;
+	  case 6:
+	    mediaFilter = CODE_input_messages_filter_audio;
+	    break;
+	  case 7:
+	    mediaFilter = CODE_input_messages_filter_audio_documents;
+	    break;
+	  case 8:
+	    mediaFilter = CODE_input_messages_filter_url;
+	    break;
+	  case 9:
+	    mediaFilter = CODE_input_messages_filter_gif;
 	    break;
 	  default:
 	    mediaFilter = CODE_input_messages_filter_empty;
