@@ -18,7 +18,7 @@
 */
 
 #ifndef PROG_NAME
-#define PROG_NAME "telegram-cli"
+#define PROG_NAME "tgfs"
 #endif
 
 #define TELEGRAM_CLI_VERSION "1.4.1"
